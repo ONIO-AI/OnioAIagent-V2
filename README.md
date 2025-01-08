@@ -28,7 +28,7 @@ ONIO is designed to simplify the creation of AI agents that can interact with us
 - **Task Management**: Define a list of tasks and have agents respond to specific user requests.
 - **Multilingual Support**: Agents can interact with users in different languages.
 - **API Integration**: Extend the functionality of your agents by connecting them to external services or APIs.
-- **Flexible Configuration**: Simple JSON-based configuration allows for quick customization and updates.
+- **Flexible Configuration**: Simple.py-based configuration allows for quick customization and updates.
 - **Scalable Architecture**: The framework is designed to support a wide variety of agents, from basic ones to more complex, multi-functional agents.
 - **Telegram Integration**: Create agents that can respond to messages on Telegram, send updates, and perform tasks within Telegram chats.
 - **Discord Integration**: Build agents that interact with Discord users, send messages, and respond to commands in Discord servers.
@@ -42,12 +42,12 @@ The **Telegram Agent** functionality allows you to create an agent that interact
 ### **Features**:
 - Responds to messages sent to your Telegram bot.
 - Can handle simple text messages and predefined commands (e.g., /hello, /joke).
-- Supports interactive replies and tasks defined in your `config.json`.
+- Supports interactive replies and tasks defined in your `config.py`.
 - Customizable for specific Telegram groups or channels.
 
 ### **How It Works**:
 1. **Create a Telegram Bot**: Set up a bot using the [BotFather](https://core.telegram.org/bots#botfather) on Telegram.
-2. **Configure Telegram Integration**: Add your bot’s API token to the `telegram_config.json` file.
+2. **Configure Telegram Integration**: Add your bot’s API token to the `telegram_config.py` file.
 3. **Interact**: Once configured, your agent will start responding to messages in your Telegram bot, performing tasks like sending jokes, answering questions, and more.
 
 ---
@@ -64,7 +64,7 @@ ONIO also provides **Discord Agent** functionality, enabling agents to interact 
 
 ### **How It Works**:
 1. **Create a Discord Bot**: Go to the [Discord Developer Portal](https://discord.com/developers/applications), create a new bot, and copy its token.
-2. **Configure Discord Integration**: Add your bot’s token to the `discord_config.json` file.
+2. **Configure Discord Integration**: Add your bot’s token to the `discord_config.py` file.
 3. **Invite Bot to Server**: Use the generated OAuth2 URL to invite your bot to a Discord server.
 4. **Interact**: Your agent will begin responding to messages in Discord, whether it’s answering questions, handling commands, or providing information.
 
@@ -77,7 +77,7 @@ ONIO is structured to make building, customizing, and deploying AI agents easy:
 1. **Agent Core**: The backbone of the framework, powered by OpenAI’s GPT models.
 2. **Task Engine**: Manages the agent's responses and tasks, allowing it to handle predefined actions like sending greetings, jokes, etc.
 3. **Social Media Integrations**: Provides easy-to-use configurations for integrating your agent with platforms like Telegram and Discord.
-4. **Configuration Files**: `settings.json`, `telegram_config.json`, and `discord_config.json` control the agent’s behavior, personality, and platform-specific settings.
+4. **Configuration Files**: `settings.py`, `telegram_config.py`, and `discord_config.py` control the agent’s behavior, personality, and platform-specific settings.
 5. **Extensibility**: ONIO is designed to be easily extensible. You can add more tasks, integrate third-party APIs, and modify the agent's behavior as needed.
 
 ---
@@ -134,6 +134,233 @@ Here’s how you can contribute:
 Whether you're a developer looking to create custom AI agents or just someone interested in AI technologies, ONIO provides the tools and flexibility to bring your vision to life. Start building today and create powerful, intelligent agents with ONIO!
 
 ---
+
+1. **Clone the Repository**
+
+```bash
+git clone https://github.com/onio-ai/onio.git
+```
+
+2. **Set Up Python Environment**
+
+```bash
+# Create virtual environment
+python -m venv venv
+
+# Activate virtual environment
+# On Windows
+.\venv\Scripts\activate
+# On Unix or MacOS
+source venv/bin/activate
+
+# Install dependencies
+pip install -r requirements.txt
+```
+
+3. **Configure Environment Variables**
+
+```bash
+# Copy example environment file
+cp .env.example .env
+
+# Edit .env file with your configurations
+nano .env  # or use your preferred editor
+```
+
+4. **Initialize Project Structure**
+```bash
+# Create necessary directories
+mkdir -p logs data models
+mkdir -p config/platform_configs
+```
+
+5. **Start the Application**
+```bash
+# Development mode
+python main.py
+
+# Or with specific config
+python main.py --config=config/config.py
+```
+
+### Production Deployment
+
+1. **System Preparation**
+
+```bash
+# Update system packages
+sudo apt-get update
+sudo apt-get upgrade
+
+# Install required system packages
+sudo apt-get install python3.10 python3.10-venv python3-pip
+sudo apt-get install redis-server postgresql
+```
+
+2. **Database Setup**
+```bash
+# Create PostgreSQL database
+sudo -u postgres psql
+
+postgres=# CREATE DATABASE onio_db;
+postgres=# CREATE USER onio_user WITH PASSWORD 'your_password';
+postgres=# GRANT ALL PRIVILEGES ON DATABASE onio_db TO onio_user;
+postgres=# \q
+```
+
+3. **Application Setup**
+```bash
+# Create application directory
+sudo mkdir /opt/onio
+sudo chown $USER:$USER /opt/onio
+
+# Clone repository
+git clone https://github.com/your-repo/onio.git /opt/onio
+cd /opt/onio
+
+# Setup virtual environment
+python3.10 -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+```
+
+4. **Production Configuration**
+```bash
+# Copy and edit production environment file
+cp .env.example .env.production
+nano .env.production
+
+# Set production configurations
+export ENVIRONMENT=production
+export APP_ENV=production
+```
+
+5. **Setup Systemd Service**
+```bash
+# Create service file
+sudo nano /etc/systemd/system/onio.service
+```
+
+Add the following content:
+```ini
+[Unit]
+Description=ONIO AI Agent Service
+After=network.target
+
+[Service]
+User=your_user
+Group=your_group
+WorkingDirectory=/opt/onio
+Environment="PATH=/opt/onio/venv/bin"
+EnvironmentFile=/opt/onio/.env.production
+ExecStart=/opt/onio/venv/bin/python main.py
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+```
+
+6. **Start the Service**
+```bash
+# Reload systemd
+sudo systemctl daemon-reload
+
+# Start service
+sudo systemctl start onio
+
+# Enable on boot
+sudo systemctl enable onio
+
+# Check status
+sudo systemctl status onio
+```
+
+### Docker Deployment
+
+1. **Prepare Docker Environment**
+```bash
+# Install Docker
+curl -fsSL https://get.docker.com -o get-docker.sh
+sudo sh get-docker.sh
+
+# Install Docker Compose
+sudo curl -L "https://github.com/docker/compose/releases/download/v2.20.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+sudo chmod +x /usr/local/bin/docker-compose
+```
+
+2. **Create Docker Configuration**
+
+Create `Dockerfile`:
+```dockerfile
+FROM python:3.10-slim
+
+WORKDIR /app
+
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY . .
+
+CMD ["python", "main.py"]
+```
+
+Create `docker-compose.yml`:
+```yaml
+version: '3.8'
+
+services:
+  onio:
+    build: .
+    env_file: .env.production
+    volumes:
+      - ./logs:/app/logs
+      - ./data:/app/data
+    depends_on:
+      - redis
+      - postgres
+
+  redis:
+    image: redis:alpine
+    volumes:
+      - redis_data:/data
+
+  postgres:
+    image: postgres:13
+    environment:
+      POSTGRES_DB: onio_db
+      POSTGRES_USER: onio_user
+      POSTGRES_PASSWORD: your_password
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  redis_data:
+  postgres_data:
+```
+
+3. **Build and Run with Docker**
+```bash
+# Build images
+docker-compose build
+
+# Start services
+docker-compose up -d
+
+# Check logs
+docker-compose logs -f onio
+```
+
+4. **Docker Production Considerations**
+```bash
+# Set up Docker Swarm (for orchestration)
+docker swarm init
+
+# Deploy stack
+docker stack deploy -c docker-compose.yml onio
+
+# Scale services
+docker service scale onio_app=3
+```
 
 🎉 **Happy Coding!**
 
