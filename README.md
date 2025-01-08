@@ -1,5 +1,11 @@
 # ONIO - AI Agent Framework V2
 
+[![license](https://img.shields.io/packagist/l/doctrine/orm.svg)](https://github.com/QuickAI-Solutions/QuickAI-agent-trading?tab=MIT-1-ov-file)
+[![dep1](https://img.shields.io/badge/implementation-tensorflow-orange.svg)](https://www.tensorflow.org/)
+[![dep2](https://img.shields.io/badge/python-3.10-red.svg)](https://www.python.org/download/releases/2.7/)
+[![dep3](https://img.shields.io/badge/status-in%20progress-green.svg)](https://github.com/QuickAI-Solutions/QuickAI-agent-trading)
+[![dep4](https://img.shields.io/badge/docker%20image-available-ff69b4.svg)](https://hub.docker.com/layers/site24x7/docker-agent/release1990/images/sha256-66aa35f69df70b910a2813dc90f9cba2fbc4126e4eac68851f9c96c377901dbb)
+
 **ONIO** is an open-source framework for building customizable AI agents. It allows developers to create agents with distinct personalities, execute specific tasks, and integrate external services. Built on top of OpenAI's GPT models, ONIO empowers you to create intelligent agents for various use cases such as chatbots, virtual assistants, task automation, and social media integrations like Telegram and Discord.
 
 ---
